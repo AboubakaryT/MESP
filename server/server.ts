@@ -1,29 +1,31 @@
-const express = require('express');
+import express, { type Express, type Request, type Response } from 'express';
+
 const bodyParse = require("body-parser");
-const app = express();
+const app : Express = express();
 app.use(bodyParse.json())
 const port = 4000
 
-const users = [
+    const users : {name: string, id: number, age: number}[] = [
     { name: "ricky",
       id: 1,
-      age:"22"
+      age: 22
 },
     { name: "phil",
     id:2,
-    age:"30"
+    age: 30
 }
 ]
 
-app.get("/", (req, res)=>{  
+//GET
+app.get("/", (req : Request, res : Response)=>{  
     res.send("hello world")
 });
 
-app.get("/api/users",(req,res)=>{
+app.get("/api/users",(req : Request,res : Response)=>{
     res.send(users);
 })
 
-app.get("/api/users/:id", (req, res)=>{
+app.get("/api/users/:id", (req : Request, res : Response)=>{
     const id = Number(req.params.id);
     const findUser = users.find(user => user.id === id)
         res.send(findUser);
@@ -35,8 +37,8 @@ app.get("/api/users/:id", (req, res)=>{
 
 //Appending to array of object
 //Patch updates a specific object in the array
-app.put("/api/users/:id", (req,res)=>{
-    const userId = parseInt(req.params.id)
+app.put("/api/users/:id", (req : Request ,res :Response)=>{
+    const userId = Number(req.params.id)
     const {name, age} = req.body;
     
     const user = users.find(user => user.id === userId);
@@ -52,9 +54,8 @@ app.put("/api/users/:id", (req,res)=>{
 })
 
 //Delete
-
-app.delete("/api/users/:id", (req, res)=>{
-    const userId = parseInt(req.params.id)
+app.delete("/api/users/:id", (req: Request, res: Response)=>{
+    const userId = Number(req.params.id)
     //Index of user with given id
     const userFound = users.findIndex(user => user.id === userId)
     if(userFound != -1){

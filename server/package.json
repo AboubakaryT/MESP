@@ -8,10 +8,14 @@
   "main": "index.js",
   "scripts": {
     "start": "node-server",
-    "dev": "node --watch server"
+    "dev": "tsx --watch server"
   },
   "dependencies": {
     "body-parser": "^2.3.0",
     "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.6",
+    "tsx": "^4.23.1"
   }
 }
