@@ -51,6 +51,20 @@ app.put("/api/users/:id", (req,res)=>{
     }
 })
 
+//Delete
+
+app.delete("/api/users/:id", (req, res)=>{
+    const userId = parseInt(req.params.id)
+    //Index of user with given id
+    const userFound = users.findIndex(user => user.id === userId)
+    if(userFound != -1){
+            const ret = users.splice(userFound, 1);
+            res.send(ret)
+    }
+    else{
+        res.status(404).send("user not found")
+    }
+})
 
 app.listen(port,()=>{
     console.log(`Server is up and running port ${port}`)
