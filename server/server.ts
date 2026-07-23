@@ -1,9 +1,15 @@
 import express, { type Express, type Request, type Response } from 'express';
 
-const bodyParse = require("body-parser");
 const app : Express = express();
-app.use(bodyParse.json())
-const port = 4000
+const cors = require('cors');
+app.use(express.json());
+const port = 4000;
+//Allows my react frontend to contact my backend.
+const corsOptions ={
+    origin : 'http://localhost:5173'
+}
+
+app.use(cors(corsOptions));
 
     const users : {name: string, id: number, age: number}[] = [
     { name: "ricky",
@@ -18,7 +24,7 @@ const port = 4000
 
 //GET
 app.get("/", (req : Request, res : Response)=>{  
-    res.send("hello world")
+    res.send("hello world");
 });
 
 app.get("/api/users",(req : Request,res : Response)=>{
@@ -27,10 +33,12 @@ app.get("/api/users",(req : Request,res : Response)=>{
 
 app.get("/api/users/:id", (req : Request, res : Response)=>{
     const id = Number(req.params.id);
-    const findUser = users.find(user => user.id === id)
-        res.send(findUser);
+    const findUser = users.find(user => user.id === id);
         if(findUser === undefined){
-            res.status(404).send("user not found.")
+            res.status(404).send("user not found.");
+        }
+        else{
+            res.send(findUser);
         }
    
 });
@@ -49,24 +57,35 @@ app.put("/api/users/:id", (req : Request ,res :Response)=>{
         res.send(user);
     }
     else{
-        res.status(404).send("user not found")
+        res.status(404).send("user not found");
     }
+})
+
+//Post
+app.post("/api/users",(req: Request, res :Response)=>{
+    const newUser = {
+        name: req.body.name,
+        id: users.length + 1, 
+        age: req.body.age,
+    }
+    users.push(newUser);
+    res.send(users)
 })
 
 //Delete
 app.delete("/api/users/:id", (req: Request, res: Response)=>{
     const userId = Number(req.params.id)
     //Index of user with given id
-    const userFound = users.findIndex(user => user.id === userId)
+    const userFound = users.findIndex(user => user.id === userId);
     if(userFound != -1){
             const ret = users.splice(userFound, 1);
-            res.send(ret)
+            res.send(ret);
     }
     else{
-        res.status(404).send("user not found")
+        res.status(404).send("user not found");
     }
 })
 
 app.listen(port,()=>{
-    console.log(`Server is up and running port ${port}`)
+    console.log(`Server is up and running port ${port}`);
 })
