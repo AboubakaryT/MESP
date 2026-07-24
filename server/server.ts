@@ -31,6 +31,15 @@ app.get("/api/users",(req : Request,res : Response)=>{
     res.send(users);
 })
 
+app.get("/api/users/name", (req :Request, res, Response)=>{
+    let userNames: string[] = [];
+    for(let i = 0; i < users.length; i++){
+        let user = Object.values(users)[i].name;
+        userNames.push(user);
+    }
+    res.send(userNames)
+})
+
 app.get("/api/users/:id", (req : Request, res : Response)=>{
     const id = Number(req.params.id);
     const findUser = users.find(user => user.id === id);

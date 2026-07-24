@@ -4,7 +4,7 @@ export default function App(){
 //Use Effect(function, [if this happens the function will run.])
   const [users , setUsers] = useState([]);
 
-  useEffect(()=> {fetch("http://localhost:4000/api/users", {
+  useEffect(()=> {fetch("http://localhost:4000/api/users/name", {
     method: 'GET',
     headers: {
       'Content-Type' : 'application/json'
